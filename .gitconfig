@@ -17,3 +17,5 @@
 	default = current
 [pager]
 	branch = false
+[pull]
+	ff = only
