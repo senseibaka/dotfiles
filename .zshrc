@@ -257,3 +257,12 @@ fast-cap-convert () {
 		HandBrakeCLI --preset "Fast 1080p30" -i $f -o $out
 	done
 }
+
+flush-dns () {
+	dscacheutil -flushcache
+	sudo killall -HUP mDNSResponder
+}
+
+senv () {
+	source ~/.envfiles/$1
+}
