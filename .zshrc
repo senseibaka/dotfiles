@@ -206,6 +206,14 @@ globalias() {
 zle -N globalias
 bindkey " " globalias # space key to expand globalalias
 
+empty-line-handler() {
+	if [[ $#BUFFER == 0 ]]; then
+		BUFFER="clear"
+	fi
+}
+
+zle -N zle-line-finish empty-line-handler
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
