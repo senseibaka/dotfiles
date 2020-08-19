@@ -180,6 +180,7 @@ node-clear () {
 alias edit-zsh='code ~/.zshrc'
 alias edit-aws='code ~/.aws/credentials'
 alias gpro='g pr show --open --id'
+alias clr="clear && printf '\e[3J'"
 
 # filetype aliases
 alias -s {ape,avi,flv,m4a,mkv,mov,mp3,mp4,mpeg,mpg,ogg,ogm,wav,webm}=mpv
@@ -287,3 +288,8 @@ pastefinish() {
 }
 zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
+
+aws-id () {
+	aws sts get-caller-identity
+	aws iam list-account-aliases
+}
