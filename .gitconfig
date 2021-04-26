@@ -11,7 +11,7 @@
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	conflicting = diff --name-only --diff-filter=U
-	pr = "!f() { exec az repos pr \"$@\"; }; f"
+	pr = "!f() { exec az repos pr \"$@\" --open; }; f"
 	repo = "!f() { exec az repos \"$@\"; }; f"
 [push]
 	default = current

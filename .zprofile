@@ -62,4 +62,12 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
+# Rust
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# MacPorts
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+export DISPLAY=:0
+
+# Aspen
+export PATH="$HOME/.aspen/bin:$PATH"

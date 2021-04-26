@@ -61,12 +61,18 @@ export PATH="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/
 # rust
 export PATH=$PATH:$HOME/.cargo/bin
 
+# python
+export PATH=/usr/local/opt/python/libexec/bin:$PATH
+
 # nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # aws
 export AWS_REGION=ap-southeast-2
+
+# elixir/erlang
+export ERL_AFLAGS="-kernel shell_history enabled"
 
 # don't paginate if less than a page worth of content
 export LESS="-R -F -X $LESS"
@@ -142,9 +148,11 @@ plugins=(
 	gitfast
 	aws
 	osx
+	brew
 	docker
 	docker-compose
 	you-should-use
+	asdf
 )
 source $ZSH/oh-my-zsh.sh
 
@@ -169,7 +177,6 @@ fi
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias rgf='rg --files | rg'
 alias weather='curl v2.wttr.in'
-alias brew-up='brew update && brew upgrade'
 node-usage () {
 	find . -name 'node_modules' -type d -prune -print | xargs du -chs
 }
@@ -177,10 +184,59 @@ node-clear () {
 	find . -name 'node_modules' -type d -prune -print -exec rm -rf '{}' \;
 	find . -name 'package-lock.json' -type f -prune -print -exec rm '{}' \;
 }
+npm_scripts() {
+	if [ -f package.json ]; then
+		list=$(cat package.json | jq '.scripts' | jq -r 'keys[]')
+		if [ $1 ]; then
+			if [ $1 = '-h' ] || [ $1 = '--help' ]; then
+				echo "Usage: npm_scripts [filter]\n\n	filter	Only show scripts that contain this string"
+				return 0
+			fi
+			list=$(echo $list | grep $1)
+		fi
+		if [ ! $list ]; then
+			echo "No Results"
+			return 0
+		fi
+		if [ $(echo $list | wc -l) = '1' ]; then
+			selection="1"
+		else
+			echo $list | grep -n '^' | sed 's/:/:	/'
+			echo "\nType the number of the selected script (Leave blank to quit):"
+			read selection
+		fi
+		if [ $selection ]; then
+			command=$(echo $list | sed "${selection}q;d")
+			echo "> npm run ${command}"
+			echo $command | xargs npm run
+		else
+			echo "No Selection. Quitting"
+		fi
+	else
+		echo "Cannot find package.json"
+	fi
+}
+alias ns='npm_scripts'
 alias edit-zsh='code ~/.zshrc'
 alias edit-aws='code ~/.aws/credentials'
 alias gpro='g pr show --open --id'
 alias clr="clear && printf '\e[3J'"
+alias clock='clockify-cli'
+alias clin='clock in'
+alias clout='clock out'
+alias clast='clock clone last'
+# usage: ctag <search-name>
+ctags() {
+	if [ $1 ]; then
+		clock tags --name $1
+	else
+		clock tags
+	fi
+}
+ctag() {
+	clock tags --name $1 -f {{$.ID}}
+}
+
 
 # filetype aliases
 alias -s {ape,avi,flv,m4a,mkv,mov,mp3,mp4,mpeg,mpg,ogg,ogm,wav,webm}=mpv
@@ -195,6 +251,7 @@ alias -g CC="| pbcopy "
 alias -g "?"="| fzf "
 alias -g X="| xargs "
 alias -g Y="| yank "
+alias -g just-headers="-sSL -D - -o /dev/null"
 
 # auto-expand global aliases
 globalias() {
@@ -292,4 +349,15 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 aws-id () {
 	aws sts get-caller-identity
 	aws iam list-account-aliases
+}
+
+# $1 is the search string
+# $2 is the file to search
+# e.g. git-history-search 'foo' path/to/something.txt
+git-history-search () {
+	git rev-list --all $2 | (
+    while read revision; do
+        git grep -F $1 $revision $2
+    done
+	)
 }
