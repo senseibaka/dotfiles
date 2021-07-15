@@ -61,9 +61,6 @@ export PATH="/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/
 # rust
 export PATH=$PATH:$HOME/.cargo/bin
 
-# python
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
-
 # nvm
 #export NVM_DIR="$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -157,6 +154,9 @@ plugins=(
 )
 source $ZSH/oh-my-zsh.sh
 
+# include pip stuff because asdf didn't do it
+export PATH=$PATH:$(python -m site --user-base)/bin
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -169,6 +169,10 @@ if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='nano'
 else
   export EDITOR='code'
+fi
+
+if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
+  export PATH=$PATH:/mnt/c/Program\ Files/Microsoft\ VS\ Code/bin
 fi
 
 # Compilation flags
