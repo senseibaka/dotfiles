@@ -1,2 +1,4 @@
-nodejs lts
-terraform 0.15.0
+nodejs 16.5.0
+terraform 1.0.2
+python pypy3.7-7.3.5
+dotnet-core 5.0.302
