@@ -3,3 +3,4 @@ terraform 1.0.2
 python pypy3.7-7.3.5
 dotnet-core 5.0.302
 hugo extended-0.85.0
+yarn 1.22.10
