@@ -144,7 +144,7 @@ plugins=(
 	git
 	gitfast
 	aws
-	osx
+	macos
 	brew
 	docker
 	docker-compose

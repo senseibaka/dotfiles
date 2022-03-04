@@ -3,5 +3,6 @@ terraform 1.0.2
 python pypy3.8-7.3.6
 dotnet-core 6.0.100-preview.6.21355.2
 hugo extended-0.85.0
-yarn 1.22.10
+yarn 1.22.17
 rust 1.54.0
+deno 1.19.2
