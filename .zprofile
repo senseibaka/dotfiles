@@ -71,3 +71,4 @@ export DISPLAY=:0
 
 # Aspen
 export PATH="$HOME/.aspen/bin:$PATH"
+eval "$(/opt/homebrew/bin/brew shellenv)"
